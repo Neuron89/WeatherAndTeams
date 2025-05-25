@@ -22,6 +22,13 @@ HourlyForecast hourlyForecast[24];
 CalendarEvents calendarEvents;
 Config config;
 
+// Function declarations
+void setupWiFi();
+void updateWeatherData();
+void updateCalendarData();
+void updateDisplay();
+bool saveConfig();
+
 void setup() {
   Serial.begin(115200);
   Serial.println("E-Ink Weather and Calendar Display");

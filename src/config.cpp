@@ -21,6 +21,9 @@ bool loadConfig() {
 
 // Save configuration to non-volatile storage
 bool saveConfig() {
+  // Access the global config variable
+  extern Config config;
+  
   preferences.begin("eink-weather", false); // Read-write mode
   
   preferences.putString("location", config.location);

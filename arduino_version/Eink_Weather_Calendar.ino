@@ -89,6 +89,10 @@ CalendarEvents calendarEvents;
 Config config;
 Preferences preferences;
 
+// Forward declarations
+void updateWeatherData();
+void updateCalendarData();
+
 // Function declarations
 void setupWiFi();
 bool getWeatherData(WeatherData &currentWeather, HourlyForecast hourlyForecast[]);

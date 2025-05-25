@@ -47,6 +47,9 @@ bool getLocationFromIP(String &city, String &country) {
 
 // Get weather data from OpenWeatherMap API
 bool getWeatherData(WeatherData &currentWeather, HourlyForecast hourlyForecast[]) {
+  // Access the global config variable
+  extern Config config;
+  
   // Get location from IP if not set in config
   String city, country;
   if (config.location.isEmpty()) {

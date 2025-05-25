@@ -24,6 +24,9 @@ bool authenticateMicrosoft() {
 
 // Refresh Microsoft access token using refresh token
 bool refreshMicrosoftToken() {
+  // Access the global config variable
+  extern Config config;
+  
   if (config.msftRefreshToken.isEmpty()) {
     Serial.println("No refresh token available");
     return false;
