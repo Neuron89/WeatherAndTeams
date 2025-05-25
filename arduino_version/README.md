@@ -11,6 +11,7 @@ This directory contains a simplified version of the project that can be directly
 
 1. Open `Eink_Weather_Calendar.ino` in Arduino IDE
 2. Install the required libraries through the Arduino Library Manager:
+
    - GxEPD2 by Jean-Marc Zingg
    - ArduinoJson by Benoit Blanchon
    - WiFiManager by tzapu
@@ -24,20 +25,21 @@ This directory contains a simplified version of the project that can be directly
 
 Connect the Waveshare 7.5-inch E-Paper HAT (H) to the ESP32 as follows:
 
-| E-Paper Display | ESP32 |
-|-----------------|-------|
-| BUSY            | GPIO25|
-| RST             | GPIO26|
-| DC              | GPIO27|
-| CS              | GPIO15|
-| CLK             | GPIO13|
-| DIN             | GPIO14|
-| GND             | GND   |
-| VCC             | 3.3V  |
+| E-Paper Display | ESP32  |
+| --------------- | ------ |
+| BUSY            | GPIO25 |
+| RST             | GPIO26 |
+| DC              | GPIO27 |
+| CS              | GPIO15 |
+| CLK             | GPIO13 |
+| DIN             | GPIO14 |
+| GND             | GND    |
+| VCC             | 3.3V   |
 
 ## Troubleshooting
 
 If you encounter compilation errors:
+
 - Make sure all required libraries are installed
 - Try changing the Partition Scheme to "Huge APP" in the Tools menu
 - Check that your ESP32 board support is properly installed
