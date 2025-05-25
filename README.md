@@ -29,11 +29,50 @@ A project for ESP32 and Waveshare 7.5-inch E-Ink display that shows weather info
 
 ## Setup Instructions
 
+### Using PlatformIO
+
 1. Clone this repository
 2. Open the project in PlatformIO
 3. Configure your OpenWeatherMap API key in `weather.cpp`
 4. Configure your Microsoft application credentials in `calendar.cpp`
 5. Build and upload the firmware to your ESP32
+
+### Using Arduino IDE
+
+1. Download the project files
+2. Open `src/main.cpp` in Arduino IDE (rename it to `main.ino` if needed)
+3. Install the required libraries through the Arduino Library Manager:
+   - **GxEPD2** by Jean-Marc Zingg (for E-Ink display)
+   - **ArduinoJson** by Benoit Blanchon
+   - **WiFiManager** by tzapu
+   - **Time** by Paul Stoffregen
+   - **ESP32 Arduino** framework (should be installed with ESP32 board support)
+
+4. Configure your board:
+   - Tools → Board → ESP32 Arduino → ESP32 Dev Module
+   - Tools → Partition Scheme → "Huge APP" (to have enough space for all libraries)
+   - Tools → Port → (select the port your ESP32 is connected to)
+
+5. Create a `secrets.h` file in the same directory as your sketch with your API keys:
+   ```cpp
+   #ifndef SECRETS_H
+   #define SECRETS_H
+   
+   // OpenWeatherMap API Key
+   const char* OPENWEATHERMAP_API_KEY = "your_api_key_here";
+   
+   // Microsoft Graph API credentials
+   const char* MICROSOFT_CLIENT_ID = "your_client_id_here";
+   const char* MICROSOFT_CLIENT_SECRET = "your_client_secret_here";
+   
+   #endif // SECRETS_H
+   ```
+
+6. Make sure all the project files are in the same sketch folder:
+   - Copy all `.cpp` and `.h` files from `src/` and `include/` to your sketch folder
+   - Create an `assets` folder in your sketch folder for weather icons
+
+7. Compile and upload to your ESP32
 
 ## First-time Setup
 
@@ -74,3 +113,31 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [ArduinoJson](https://arduinojson.org/) for JSON parsing
 - [OpenWeatherMap](https://openweathermap.org/) for weather data
 - [Microsoft Graph API](https://developer.microsoft.com/en-us/graph) for calendar data
+
+## Troubleshooting Arduino IDE Issues
+
+### Compilation Errors
+
+- **Missing Libraries**: Make sure all required libraries are installed through the Library Manager
+- **ESP32 Support**: Ensure you have ESP32 board support installed via Boards Manager
+- **Memory Issues**: If you get memory-related errors, try changing the Partition Scheme to "Huge APP"
+- **Multiple Definitions**: If you get "multiple definition" errors, make sure you're not including .cpp files, only .h files
+
+### Upload Issues
+
+- **Port Not Found**: Make sure your ESP32 is connected and the correct port is selected
+- **Upload Failed**: Try holding the BOOT button on your ESP32 while uploading
+- **Connection Issues**: Try a different USB cable or port
+- **Driver Issues**: Make sure you have the correct USB-to-Serial drivers installed
+
+### Display Issues
+
+- **Display Not Updating**: Check the wiring connections between ESP32 and E-Ink display
+- **Partial Updates**: E-Ink displays sometimes need a full refresh; try power cycling the device
+- **Incorrect Orientation**: Adjust the rotation parameter in `display.setRotation()`
+
+### WiFi Issues
+
+- **Cannot Connect**: Make sure you're using a 2.4GHz network (ESP32 doesn't support 5GHz)
+- **Captive Portal Not Working**: Try accessing 192.168.4.1 directly in your browser
+- **Connection Drops**: Check your power supply; unstable power can cause WiFi issues
