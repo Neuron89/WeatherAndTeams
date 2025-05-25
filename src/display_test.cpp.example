@@ -1,0 +1,153 @@
+#include <Arduino.h>
+#include "GxEPD2_BW.h"
+#include "GxEPD2_3C.h"
+#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeMonoBold12pt7b.h>
+#include <Fonts/FreeMonoBold18pt7b.h>
+#include <Fonts/FreeMonoBold24pt7b.h>
+
+// Display instance for Waveshare 7.5inch E-Paper HAT (H)
+GxEPD2_BW<GxEPD2_750_T7, GxEPD2_750_T7::HEIGHT> display(GxEPD2_750_T7(/*CS=*/ 15, /*DC=*/ 27, /*RST=*/ 26, /*BUSY=*/ 25));
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("E-Ink Display Test");
+  
+  // Initialize display
+  display.init();
+  display.setRotation(3); // Landscape mode
+  display.setTextColor(GxEPD_BLACK);
+  display.setFullWindow();
+  
+  // Clear display
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+  } while (display.nextPage());
+  
+  // Test pattern
+  testPattern();
+  
+  // Test fonts
+  testFonts();
+  
+  // Test split screen layout
+  testSplitScreen();
+  
+  Serial.println("Tests completed. Going to sleep.");
+  esp_deep_sleep_start();
+}
+
+void loop() {
+  // Nothing to do here
+}
+
+void testPattern() {
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+    
+    // Draw border
+    display.drawRect(0, 0, display.width(), display.height(), GxEPD_BLACK);
+    
+    // Draw diagonal lines
+    display.drawLine(0, 0, display.width(), display.height(), GxEPD_BLACK);
+    display.drawLine(0, display.height(), display.width(), 0, GxEPD_BLACK);
+    
+    // Draw circles
+    display.drawCircle(display.width() / 2, display.height() / 2, 100, GxEPD_BLACK);
+    display.drawCircle(display.width() / 2, display.height() / 2, 50, GxEPD_BLACK);
+    
+    // Draw rectangles
+    display.drawRect(50, 50, display.width() - 100, display.height() - 100, GxEPD_BLACK);
+    
+    // Add text
+    display.setFont(&FreeMonoBold18pt7b);
+    display.setCursor(100, 100);
+    display.print("E-Ink Display Test");
+    
+  } while (display.nextPage());
+  
+  delay(3000);
+}
+
+void testFonts() {
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+    
+    // Title
+    display.setFont(&FreeMonoBold18pt7b);
+    display.setCursor(50, 50);
+    display.print("Font Test");
+    
+    // Font samples
+    int y = 100;
+    
+    display.setFont(&FreeMonoBold9pt7b);
+    display.setCursor(50, y);
+    display.print("FreeMonoBold9pt7b");
+    y += 30;
+    
+    display.setFont(&FreeMonoBold12pt7b);
+    display.setCursor(50, y);
+    display.print("FreeMonoBold12pt7b");
+    y += 40;
+    
+    display.setFont(&FreeMonoBold18pt7b);
+    display.setCursor(50, y);
+    display.print("FreeMonoBold18pt7b");
+    y += 50;
+    
+    display.setFont(&FreeMonoBold24pt7b);
+    display.setCursor(50, y);
+    display.print("FreeMonoBold24pt7b");
+    
+  } while (display.nextPage());
+  
+  delay(3000);
+}
+
+void testSplitScreen() {
+  int splitPosition = display.width() / 2;
+  
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+    
+    // Draw vertical divider line
+    display.drawLine(splitPosition, 0, splitPosition, display.height(), GxEPD_BLACK);
+    
+    // Draw headers
+    display.setFont(&FreeMonoBold18pt7b);
+    display.setCursor(50, 50);
+    display.print("Weather");
+    
+    display.setCursor(splitPosition + 50, 50);
+    display.print("Calendar");
+    
+    // Draw sample content
+    display.setFont(&FreeMonoBold12pt7b);
+    
+    // Weather side
+    display.setCursor(50, 100);
+    display.print("Current: 23°C");
+    display.setCursor(50, 130);
+    display.print("Sunny");
+    display.setCursor(50, 160);
+    display.print("Humidity: 45%");
+    
+    // Calendar side
+    display.setCursor(splitPosition + 50, 100);
+    display.print("Today");
+    display.setCursor(splitPosition + 50, 130);
+    display.print("9:00 - Meeting");
+    display.setCursor(splitPosition + 50, 160);
+    display.print("12:30 - Lunch");
+    display.setCursor(splitPosition + 50, 190);
+    display.print("15:00 - Call");
+    
+  } while (display.nextPage());
+  
+  delay(3000);
+}
